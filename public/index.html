@@ -5,36 +5,72 @@
     <meta charset="UTF-8">
     <title>Overlay Rank LoL</title>
     <style>
+        @font-face {
+            font-family: 'Beaufort';
+            src: url('fonts/Beaufort.woff2') format('woff2'),
+                url('fonts/Beaufort.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+
         * {
             box-sizing: border-box;
+            margin: 0;
         }
 
         body {
             margin: 0;
             padding: 0;
             background: transparent;
-            color: white;
-            font-size: 24px;
-            font-family: sans-serif;
-        }
-
-        div {
-            filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
         }
 
         .container {
-            text-align: left;
+            position: relative;
+            width: 295px;
+            height: 122px;
+        }
+
+        .image {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .text {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+
             display: flex;
             flex-direction: column;
-            gap: 0px;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+
+            color: #C89B3C;
+            text-align: center;
+            font-family: 'Beaufort', sans-serif;
+        }
+
+        #rank {
+            font-size: 24px;
+        }
+
+        #remaining {
+            font-size: 16px;
         }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <div id="rank"></div>
-        <div id="remaining"></div>
+        <img src="frame.png" class="image">
+        <div class="text">
+            <span id="rank"></span>
+            <span id="remaining"></span>
+        </div>
     </div>
 
     <script>
@@ -42,11 +78,11 @@
             try {
                 const res = await fetch('/rank');
                 const data = await res.json();
-                document.getElementById('rank').textContent = `RANK ACTUEL : ${data.rank}`;
-                document.getElementById('remaining').textContent = `RANK RESTANT : ${data.remaining}`;
+                document.getElementById('rank').innerHTML = `RANK : ${data.rank}`;
+                document.getElementById('remaining').innerHTML = `RANK RESTANT : ${data.remaining}`;
             } catch (err) {
-                document.getElementById('rank').textContent = "";
-                document.getElementById('remaining').textContent = "";
+                document.getElementById('rank').innerHTML = "";
+                document.getElementById('remaining').innerHTML = "";
             }
         }
 

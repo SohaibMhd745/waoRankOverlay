@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Overlay Rank LoL</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: transparent;
+            color: white;
+            font-size: 32px;
+            font-family: sans-serif;
+        }
+
+        .container {
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            gap: 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div id="rank"></div>
+        <div id="remaining"></div>
+    </div>
+
+    <script>
+        async function updateRank() {
+            try {
+                const res = await fetch('/rank');
+                const data = await res.json();
+                document.getElementById('rank').textContent = `RANK ACTUEL : ${data.rank}`;
+                document.getElementById('remaining').textContent = `RANK RESTANT : ${data.remaining}`;
+            } catch (err) {
+                document.getElementById('rank').textContent = "";
+                document.getElementById('remaining').textContent = "";
+            }
+        }
+
+        updateRank();
+        setInterval(updateRank, 30000);
+    </script>
+</body>
+
+</html>

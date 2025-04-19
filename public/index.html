@@ -51,6 +51,7 @@
 
             color: #C89B3C;
             text-align: center;
+            text-transform: uppercase;
             font-family: 'Beaufort', sans-serif;
         }
 
@@ -58,7 +59,7 @@
             font-size: 24px;
         }
 
-        #remaining {
+        #elo {
             font-size: 16px;
         }
     </style>
@@ -69,7 +70,7 @@
         <img src="frame.png" class="image">
         <div class="text">
             <span id="rank"></span>
-            <span id="remaining"></span>
+            <span id="elo"></span>
         </div>
     </div>
 
@@ -78,11 +79,11 @@
             try {
                 const res = await fetch('/rank');
                 const data = await res.json();
-                document.getElementById('rank').innerHTML = `RANK : ${data.rank}`;
-                document.getElementById('remaining').innerHTML = `RANK RESTANT : ${data.remaining}`;
+                document.getElementById('rank').innerHTML = `Rank : ${data.rank}`;
+                document.getElementById('elo').innerHTML = `Elo : ${data.elo} - ${data.lp} LP`;
             } catch (err) {
                 document.getElementById('rank').innerHTML = "";
-                document.getElementById('remaining').innerHTML = "";
+                document.getElementById('elo').innerHTML = "";
             }
         }
 

@@ -7,23 +7,23 @@ const PORT = 3000;
 const SUMMONER_NAME = 'wao-0000';
 const REGION = 'euw';
 let currentRank = 0;
-let remaining = 0;
+let elo = '';
+let lp = 0;
 
 const getRank = async () => {
     try {
-        const url = `https://op.gg/summoners/${REGION}/${SUMMONER_NAME}`;
+        const url = `https://op.gg/summoners/${REGION}/${SUMMONER_NAME}?queue_type=SOLORANKED`;
         const { data } = await axios.get(url);
         const $ = cheerio.load(data);
 
         const ladderText = $('a[href*="leaderboards/tier"] span.text-main-600').first().text();
-        const rankNumber = parseInt(ladderText.replace(/,/g, ''), 10);
+        currentRank = parseInt(ladderText.replace(/,/g, ''), 10);
 
-        if (!isNaN(rankNumber)) {
-            currentRank = rankNumber || 0;
-            remaining = Math.abs(50 - rankNumber);
-        } else {
-            currentRank = 0;
-        }
+        const eloDiv = $('div.flex.flex-col.gap-0\\.5').first();
+        elo = eloDiv.find('strong').text().trim();
+
+        const lpText = eloDiv.find('span').text().trim();
+        lp = parseInt(lpText.replace('LP', '').trim(), 10);
     } catch (err) {
         console.error("Erreur lors du scraping :", err.message);
         currentRank = 0;
@@ -37,8 +37,9 @@ app.use(express.static('public'));
 
 app.get('/rank', (req, res) => {
     res.send({
-        rank: currentRank,
-        remaining: remaining,
+        rank: currentRank || 0,
+        elo: elo || '',
+        lp: lp || 0,
     });
 });
 

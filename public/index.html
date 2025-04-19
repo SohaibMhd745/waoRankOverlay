@@ -80,7 +80,7 @@
                 const res = await fetch('/rank');
                 const data = await res.json();
                 document.getElementById('rank').innerHTML = `Rank : ${data.rank}`;
-                document.getElementById('elo').innerHTML = `Elo : ${data.elo} - ${data.lp} LP`;
+                document.getElementById('elo').innerHTML = `Elo : ${data.elo} ${data.lp} LP`;
             } catch (err) {
                 document.getElementById('rank').innerHTML = "";
                 document.getElementById('elo').innerHTML = "";
